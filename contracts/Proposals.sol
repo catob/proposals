@@ -1,10 +1,8 @@
-pragma solidity 0.8.10;
+pragma solidity 0.8.9;
 
 contract Proposals {
     struct Proposal {
         uint id;
-        // uint yesVotes;
-        // uint noVotes;
         string title;
         string content;
     }
