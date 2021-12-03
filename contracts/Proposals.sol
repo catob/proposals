@@ -13,9 +13,10 @@ contract Proposals {
 
     constructor () {
         addProposal("First proposal", "This is a proposal");
+        addProposal("Second proposal", "This is another proposal");
     }
 
-    function addProposal(string memory _title, string memory _content) private {
+    function addProposal(string memory _title, string memory _content) public {
         proposalCount++;
         proposals[proposalCount] = Proposal(proposalCount, _title, _content);
     }

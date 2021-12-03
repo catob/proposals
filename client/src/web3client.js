@@ -3,6 +3,7 @@ import ProposalsContractBuild from 'contracts/Proposals.json';
 
 let selectedAccount;
 let proposalsContract;
+let isInitialize = false;
 
 export const init = async () => {
   let provider = window.ethereum;
@@ -31,4 +32,30 @@ export const init = async () => {
     ProposalsContractBuild.abi,
     ProposalsContractBuild.networks[networkId].address,
   );
+
+  isInitialize = true;
+  const proposals = await getProposals();
+
+  return {
+    isInitialize,
+    account: selectedAccount,
+    proposals,
+  }
+};
+
+const proposalCount = () => proposalsContract.methods.proposalCount().call();
+
+const getProposals = async () => {
+  const count = await proposalCount();
+  let arr = [];
+
+  for (let i = 1; i <= count; i++) {
+    let data = await proposalsContract.methods.proposals(i).call();
+    arr.push(data);
+  }
+  return arr;
+}
+
+export const addProposal = (title, content) => {
+  return proposalsContract.methods.addProposal(title, content).send({ from: selectedAccount });
 };
