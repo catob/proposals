@@ -20,7 +20,13 @@ function App() {
   const handleAddProposal = e => {
     e.preventDefault();
     addProposal(formData.title, formData.content).then(tx => {
-      console.log(tx)
+      const newProposal = {
+        title: formData.title,
+        content: formData.content
+      };
+      console.log(tx);
+      setFormData({});
+      setProposals([...proposals, newProposal]);
     });
   };
 
