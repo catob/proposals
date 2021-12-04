@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { init, addProposal } from './web3client';
+import { init, addProposal, vote } from './web3client';
 
 function App() {
   const [isInitialized, setInitialized] = useState(false);
@@ -30,6 +30,13 @@ function App() {
     });
   };
 
+  const handleVote = (e, id, option) => {
+    e.preventDefault();
+    vote(id, option).then(tx => {
+      console.log(tx);
+    });
+  };
+
   const handleChange = e => {
     setFormData({
       ...formData,
@@ -48,8 +55,15 @@ function App() {
               <h3>Current Proposals:</h3>
               {proposals.map(proposal => (
                 <div key={proposal.id}>
+                  {console.log(proposal)}
                   <p>Title: {proposal.title}</p>
                   <p>Content: {proposal.content}</p>
+                  <p>
+                    <span>For: {proposal.yesVote} | </span>
+                    <span>Against: {proposal.noVote}</span>
+                  </p>
+                  <button onClick={e => handleVote(e, proposal.id, true)}>Vote yes</button>
+                  <button onClick={e => handleVote(e, proposal.id, false)}>Vote no</button>
                   <hr style={{width: '1000px'}}></hr>
                 </div>
               ))}

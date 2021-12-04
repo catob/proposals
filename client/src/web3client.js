@@ -59,3 +59,7 @@ const getProposals = async () => {
 export const addProposal = (title, content) => {
   return proposalsContract.methods.addProposal(title, content).send({ from: selectedAccount });
 };
+
+export const vote = (id, vote) => {
+  return proposalsContract.methods.voteOnProposal(id, vote).send({ from: selectedAccount });
+};
