@@ -45,7 +45,7 @@ export const init = async () => {
 
 const proposalCount = () => proposalsContract.methods.proposalCount().call();
 
-const getProposals = async () => {
+export const getProposals = async () => {
   const count = await proposalCount();
   let arr = [];
 

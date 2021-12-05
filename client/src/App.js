@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
-import { init, addProposal, vote } from './web3client';
+import { init, getProposals, addProposal, vote } from './web3client';
 
 function App() {
   const [isInitialized, setInitialized] = useState(false);
@@ -13,27 +13,24 @@ function App() {
       setInitialized(res.isInitialize);
       setAccount(res.account);
       setProposals(res.proposals);
-      console.log(res);
     });
   }, []);
 
   const handleAddProposal = e => {
     e.preventDefault();
-    addProposal(formData.title, formData.content).then(tx => {
-      const newProposal = {
-        title: formData.title,
-        content: formData.content
-      };
-      console.log(tx);
-      setFormData({});
-      setProposals([...proposals, newProposal]);
+    addProposal(formData.title, formData.content).then(_ => {
+      getProposals().then(allProposals => {
+        setProposals(allProposals);
+      });
     });
   };
 
   const handleVote = (e, id, option) => {
     e.preventDefault();
-    vote(id, option).then(tx => {
-      console.log(tx);
+    vote(id, option).then(_ => {
+      getProposals().then(allProposals => {
+        setProposals(allProposals);
+      });
     });
   };
 
@@ -55,7 +52,6 @@ function App() {
               <h3>Current Proposals:</h3>
               {proposals.map(proposal => (
                 <div key={proposal.id}>
-                  {console.log(proposal)}
                   <p>Title: {proposal.title}</p>
                   <p>Content: {proposal.content}</p>
                   <p>
